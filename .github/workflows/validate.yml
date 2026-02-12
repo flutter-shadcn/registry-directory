@@ -1,0 +1,116 @@
+name: Validate Registry Directory
+
+on:
+  pull_request:
+    paths:
+      - "registries/**.json"
+  push:
+    branches:
+      - main
+    paths:
+      - "registries/**.json"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq curl
+          npm install --no-fund --no-audit ajv-cli ajv-formats
+
+      - name: Validate JSON syntax
+        run: jq empty registries/registries.json
+
+      - name: Validate against schema
+        run: npx ajv validate -c ajv-formats -s registries/registries.schema.json -d registries/registries.json --spec=draft2020
+
+      - name: Check duplicate namespaces
+        run: |
+          set -euo pipefail
+          duplicates="$(
+            jq -r '
+              .registries[]
+              | .install.namespace
+            ' registries/registries.json \
+            | sed '/^$/d' \
+            | sort \
+            | uniq -d
+          )"
+          if [ -n "$duplicates" ]; then
+            echo "Duplicate namespaces found:"
+            echo "$duplicates"
+            exit 1
+          fi
+
+      - name: Check duplicate install roots
+        run: |
+          set -euo pipefail
+          duplicates="$(
+            jq -r '.registries[] | .install.root' registries/registries.json \
+            | sed '/^$/d' \
+            | sort \
+            | uniq -d
+          )"
+          if [ -n "$duplicates" ]; then
+            echo "Duplicate install roots found:"
+            echo "$duplicates"
+            exit 1
+          fi
+
+      - name: Check registry URLs return 200
+        run: |
+          set -euo pipefail
+          failed=0
+          while IFS= read -r url; do
+            [ -z "$url" ] && continue
+            code="$(curl -L -sS -o /dev/null -w "%{http_code}" --max-time 20 "$url" || true)"
+            if [ "$code" != "200" ]; then
+              echo "URL check failed: $url (HTTP $code)"
+              failed=1
+            fi
+          done < <(
+            jq -r '
+              .registries[]
+              | [
+                  (.repo // empty),
+                  (.homepage // empty),
+                  (.baseUrl // empty)
+                ]
+              | .[]
+              | select(type == "string" and length > 0)
+            ' registries/registries.json | sort -u
+          )
+          if [ "$failed" -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Check components.json reachable
+        run: |
+          set -euo pipefail
+          failed=0
+          while IFS= read -r url; do
+            [ -z "$url" ] && continue
+            code="$(curl -L -sS -o /dev/null -w "%{http_code}" --max-time 20 "$url" || true)"
+            if [ "$code" != "200" ]; then
+              echo "components.json check failed: $url (HTTP $code)"
+              failed=1
+            fi
+          done < <(
+            jq -r '
+              .registries[]
+              | (.baseUrl | rtrimstr("/") + "/" + .paths.componentsJson)
+            ' registries/registries.json | sort -u
+          )
+          if [ "$failed" -ne 0 ]; then
+            exit 1
+          fi

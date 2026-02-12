@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flutter-shadcn.github.io/registry-directory/registries/registries.schema.json",
+  "title": "Registry Directory Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "registries"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "registries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/registry"
+      }
+    }
+  },
+  "$defs": {
+    "registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "displayName",
+        "maintainers",
+        "repo",
+        "license",
+        "minCliVersion",
+        "baseUrl",
+        "paths",
+        "install"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_\\-]{1,63}$",
+          "description": "Stable identifier for the registry entry in registries.json (lowercase, URL/CLI safe)."
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "maintainers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          }
+        },
+        "repo": {
+          "type": "string",
+          "format": "uri"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "minCliVersion": {
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:[-+][0-9A-Za-z.-]+)?$",
+          "description": "SemVer string specifying the minimum CLI version required to safely consume this registry."
+        },
+        "homepage": {
+          "type": "string",
+          "format": "uri"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "baseUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https://).+",
+          "description": "HTTPS base URL that acts as the root for resolving registry-relative files."
+        },
+        "paths": {
+          "$ref": "#/$defs/paths"
+        },
+        "install": {
+          "$ref": "#/$defs/install"
+        },
+        "capabilities": {
+          "$ref": "#/$defs/capabilities"
+        },
+        "trust": {
+          "$ref": "#/$defs/trust"
+        }
+      }
+    },
+    "paths": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "componentsJson"
+      ],
+      "properties": {
+        "componentsJson": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "componentsSchemaJson": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "folderStructureJson": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "metaJson": {
+          "$ref": "#/$defs/relativePath"
+        }
+      }
+    },
+    "install": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace",
+        "root"
+      ],
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,31}$",
+          "description": "Registry namespace prefix used in component addressing: '<namespace>:<componentId>'."
+        },
+        "root": {
+          "type": "string",
+          "pattern": "^lib/[-a-zA-Z0-9_./]+$",
+          "description": "Install root folder inside the consumer project, e.g. 'lib/ui/shadcn' or 'lib/ui/orient'."
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sharedGroups": {
+          "type": "boolean",
+          "default": false
+        },
+        "composites": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "none",
+            "sha256"
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 200,
+          "description": "Integrity pin for the fetched components.json file (hex or base64)."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "sha256"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "sha256"
+            ]
+          }
+        }
+      ]
+    },
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "pattern": "^(?!/)(?!.*\\s)(?!.*\\.\\./)(?!.*\\./\\./)[-a-zA-Z0-9_./]+$",
+      "description": "Registry-relative path. No leading '/', no spaces, no '..' segments."
+    }
+  }
+}
