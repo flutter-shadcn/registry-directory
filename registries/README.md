@@ -2,6 +2,12 @@
 
 This folder contains the canonical registry directory consumed by `flutter_shadcn`.
 
+`registries.json` is generated from `registries/entries/*.json` via:
+
+```bash
+dart run scripts/build_registries.dart
+```
+
 ## CLI Component Addressing
 
 Use fully-qualified component addresses:

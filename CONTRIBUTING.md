@@ -14,7 +14,9 @@ Please ensure:
 
 ## Pull Request Checklist
 
-- [ ] Registry entry added to `registries/registries.json`
+- [ ] Registry entry added to `registries/entries/<id>.json`
+- [ ] Ran `dart run scripts/build_registries.dart`
+- [ ] Generated `registries/registries.json` is included in the PR
 - [ ] Namespace is unique
 - [ ] Install root is unique
 - [ ] URLs are HTTPS

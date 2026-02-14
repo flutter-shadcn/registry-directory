@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - "registries/**.json"
+      - "scripts/build_registries.dart"
   push:
     branches:
       - main
     paths:
       - "registries/**.json"
+      - "scripts/build_registries.dart"
 
 jobs:
   validate:
@@ -22,11 +24,25 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y jq curl
           npm install --no-fund --no-audit ajv-cli ajv-formats
+
+      - name: Validate entries JSON syntax
+        run: |
+          set -euo pipefail
+          find registries/entries -type f -name "*.json" -print0 | xargs -0 -n1 jq empty
+
+      - name: Build registries.json from entries
+        run: dart run scripts/build_registries.dart
+
+      - name: Ensure registries.json is up to date
+        run: git diff --exit-code -- registries/registries.json
 
       - name: Validate JSON syntax
         run: jq empty registries/registries.json

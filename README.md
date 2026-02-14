@@ -8,7 +8,8 @@ https://flutter-shadcn.github.io/registry-directory/registries/registries.json
 
 ## Repository Contents
 
-- `registries/registries.json`: Approved registries directory
+- `registries/entries/*.json`: Source-of-truth registry entry files (one file per registry)
+- `registries/registries.json`: Generated combined registries directory
 - `registries/registries.schema.json`: Draft 2020-12 strict schema
 - `.github/workflows/validate.yml`: PR and push validation
 
@@ -17,10 +18,12 @@ This repository does not host UI components. Each external registry hosts its ow
 ## Adding a Registry
 
 1. Fork this repository.
-2. Add your entry to `registries/registries.json`.
-3. Open a pull request.
+2. Add a new file in `registries/entries/` (for example: `registries/entries/my-registry.json`).
+3. Run:
+`dart run scripts/build_registries.dart`
+4. Open a pull request.
 
-CI validates schema correctness, duplicate namespaces, duplicate install roots, URL reachability, and `components.json` availability.
+CI validates entry syntax, rebuilds `registries/registries.json`, checks it is up to date, validates schema correctness, checks duplicate namespaces/install roots, URL reachability, and `components.json` availability.
 
 ## Registry Rules
 

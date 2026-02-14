@@ -50,7 +50,9 @@ void main(List<String> args) async {
               outputRoot: outputRoot,
               rootAbs: folderAbs,
             );
-      stdout.writeln('Removed $removed index.json files under ${outputRoot.path}');
+      stdout.writeln(
+        'Removed $removed index.json files under ${outputRoot.path}',
+      );
       return;
     }
 
@@ -112,11 +114,7 @@ void main(List<String> args) async {
 
   final jsonMap = _buildIndexJson(schemaRef: schemaRef, files: files);
 
-  _validateOrExit(
-    data: jsonMap,
-    schemaJson: schemaJson,
-    schemaArg: schemaArg,
-  );
+  _validateOrExit(data: jsonMap, schemaJson: schemaJson, schemaArg: schemaArg);
 
   if (!outputFile.parent.existsSync()) {
     outputFile.parent.createSync(recursive: true);
@@ -263,9 +261,7 @@ String _normalizePath(String path) {
 }
 
 String _toRelativeFilePath(String fileAbs, String folderAbs) {
-  final normalizedFolder = folderAbs.endsWith('/')
-      ? folderAbs
-      : '$folderAbs/';
+  final normalizedFolder = folderAbs.endsWith('/') ? folderAbs : '$folderAbs/';
 
   if (fileAbs.startsWith(normalizedFolder)) {
     return fileAbs.substring(normalizedFolder.length);
@@ -276,9 +272,7 @@ String _toRelativeFilePath(String fileAbs, String folderAbs) {
   return fileUri.pathSegments.isEmpty
       ? ''
       : Uri.decodeComponent(
-          Uri(
-            pathSegments: fileUri.pathSegments,
-          ).path,
+          Uri(pathSegments: fileUri.pathSegments).path,
         ).replaceFirst(folderUri.path, '');
 }
 
@@ -390,18 +384,18 @@ List<String> _validateIndexAgainstSchema({
 }) {
   final errors = <String>[];
 
-  final requiredKeys =
-      (schema['required'] is List) ? (schema['required'] as List) : const [];
+  final requiredKeys = (schema['required'] is List)
+      ? (schema['required'] as List)
+      : const [];
   for (final key in requiredKeys) {
     if (key is String && !data.containsKey(key)) {
       errors.add("Missing required property '$key'.");
     }
   }
 
-  final properties =
-      (schema['properties'] is Map<String, dynamic>)
-          ? (schema['properties'] as Map<String, dynamic>)
-          : const <String, dynamic>{};
+  final properties = (schema['properties'] is Map<String, dynamic>)
+      ? (schema['properties'] as Map<String, dynamic>)
+      : const <String, dynamic>{};
 
   final additionalProperties = schema['additionalProperties'];
   if (additionalProperties == false) {
@@ -414,11 +408,12 @@ List<String> _validateIndexAgainstSchema({
 
   final schemaVersionSchema =
       properties['schemaVersion'] is Map<String, dynamic>
-          ? properties['schemaVersion'] as Map<String, dynamic>
-          : const <String, dynamic>{};
+      ? properties['schemaVersion'] as Map<String, dynamic>
+      : const <String, dynamic>{};
   final expectedSchemaVersion = schemaVersionSchema['const'];
   final actualSchemaVersion = data['schemaVersion'];
-  if (expectedSchemaVersion != null && actualSchemaVersion != expectedSchemaVersion) {
+  if (expectedSchemaVersion != null &&
+      actualSchemaVersion != expectedSchemaVersion) {
     errors.add(
       "schemaVersion must be $expectedSchemaVersion, got $actualSchemaVersion.",
     );
@@ -437,26 +432,23 @@ List<String> _validateIndexAgainstSchema({
     return errors;
   }
 
-  final filesSchema =
-      properties['files'] is Map<String, dynamic>
-          ? properties['files'] as Map<String, dynamic>
-          : const <String, dynamic>{};
+  final filesSchema = properties['files'] is Map<String, dynamic>
+      ? properties['files'] as Map<String, dynamic>
+      : const <String, dynamic>{};
   final minItems = filesSchema['minItems'];
   final maxItems = filesSchema['maxItems'];
   final uniqueItems = filesSchema['uniqueItems'] == true;
-  final itemSchema =
-      filesSchema['items'] is Map<String, dynamic>
-          ? filesSchema['items'] as Map<String, dynamic>
-          : const <String, dynamic>{};
+  final itemSchema = filesSchema['items'] is Map<String, dynamic>
+      ? filesSchema['items'] as Map<String, dynamic>
+      : const <String, dynamic>{};
 
   final itemRef = itemSchema[r'$ref'];
   Map<String, dynamic> resolvedItemSchema = itemSchema;
   if (itemRef is String && itemRef.startsWith(r'#/$defs/')) {
     final defName = itemRef.substring(r'#/$defs/'.length);
-    final defs =
-        (schema[r'$defs'] is Map<String, dynamic>)
-            ? schema[r'$defs'] as Map<String, dynamic>
-            : const <String, dynamic>{};
+    final defs = (schema[r'$defs'] is Map<String, dynamic>)
+        ? schema[r'$defs'] as Map<String, dynamic>
+        : const <String, dynamic>{};
     if (defs[defName] is Map<String, dynamic>) {
       resolvedItemSchema = defs[defName] as Map<String, dynamic>;
     }
@@ -542,7 +534,10 @@ Future<List<String>> _collectRelativeFiles({
   required _ExcludeMatcher excludeMatcher,
 }) async {
   final files = <String>[];
-  await for (final entity in sourceDir.list(recursive: true, followLinks: false)) {
+  await for (final entity in sourceDir.list(
+    recursive: true,
+    followLinks: false,
+  )) {
     if (entity is! File) continue;
 
     final fileAbs = _normalizePath(entity.absolute.path);
@@ -575,7 +570,9 @@ Future<int> _generatePerFolderIndexes({
         ? _normalizePath(outputRoot.path)
         : '${_normalizePath(outputRoot.path)}/$relativeDir';
     final outFilePath = _normalizePath('$outDirPath/index.json');
-    outputPathsBySourceDir[dirAbs] = _normalizePath(File(outFilePath).absolute.path);
+    outputPathsBySourceDir[dirAbs] = _normalizePath(
+      File(outFilePath).absolute.path,
+    );
   }
 
   final allOutputPaths = outputPathsBySourceDir.values.toSet();
@@ -600,7 +597,11 @@ Future<int> _generatePerFolderIndexes({
     }
 
     final jsonMap = _buildIndexJson(schemaRef: schemaRef, files: files);
-    _validateOrExit(data: jsonMap, schemaJson: schemaJson, schemaArg: schemaArg);
+    _validateOrExit(
+      data: jsonMap,
+      schemaJson: schemaJson,
+      schemaArg: schemaArg,
+    );
 
     if (!outFile.parent.existsSync()) {
       outFile.parent.createSync(recursive: true);
@@ -645,7 +646,9 @@ Future<int> _generateTopLevelIndexes({
         ? _normalizePath(outputRoot.path)
         : '${_normalizePath(outputRoot.path)}/$relativeDir';
     final outFilePath = _normalizePath('$outDirPath/index.json');
-    outputPathsBySourceDir[dirAbs] = _normalizePath(File(outFilePath).absolute.path);
+    outputPathsBySourceDir[dirAbs] = _normalizePath(
+      File(outFilePath).absolute.path,
+    );
   }
 
   final allOutputPaths = outputPathsBySourceDir.values.toSet();
@@ -669,7 +672,11 @@ Future<int> _generateTopLevelIndexes({
     }
 
     final jsonMap = _buildIndexJson(schemaRef: schemaRef, files: files);
-    _validateOrExit(data: jsonMap, schemaJson: schemaJson, schemaArg: schemaArg);
+    _validateOrExit(
+      data: jsonMap,
+      schemaJson: schemaJson,
+      schemaArg: schemaArg,
+    );
 
     if (!outFile.parent.existsSync()) {
       outFile.parent.createSync(recursive: true);
