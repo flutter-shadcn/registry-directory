@@ -22,6 +22,7 @@
     },
     "registries": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "$ref": "#/$defs/registry"
       }
@@ -101,6 +102,9 @@
         },
         "trust": {
           "$ref": "#/$defs/trust"
+        },
+        "init": {
+          "$ref": "#/$defs/init"
         }
       }
     },
@@ -115,6 +119,12 @@
           "$ref": "#/$defs/relativePath"
         },
         "componentsSchemaJson": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "indexJson":{
+          "$ref": "#/$defs/relativePath"
+        },
+        "indexSchemaJson":{
           "$ref": "#/$defs/relativePath"
         },
         "folderStructureJson": {
@@ -197,10 +207,400 @@
         }
       ]
     },
+    "init": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "actions"
+      ],
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/action"
+          }
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ensureDirs",
+            "copyFiles",
+            "copyDir",
+            "mergePubspec",
+            "message"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "ensureDirs"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "$ref": "#/$defs/ensureDirsAction"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "copyFiles"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "$ref": "#/$defs/copyFilesAction"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "copyDir"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "$ref": "#/$defs/copyDirAction"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "mergePubspec"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "$ref": "#/$defs/mergePubspecAction"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "message"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "$ref": "#/$defs/messageAction"
+          }
+        }
+      ]
+    },
+    "ensureDirsAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "dirs"
+      ],
+      "properties": {
+        "type": {
+          "const": "ensureDirs"
+        },
+        "dirs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/relativePath"
+          }
+        }
+      }
+    },
+    "copyFilesAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "files"
+      ],
+      "properties": {
+        "type": {
+          "const": "copyFiles"
+        },
+        "base": {
+          "$ref": "#/$defs/relativePath",
+          "description": "Source base path inside the registry (e.g. 'registry')."
+        },
+        "destBase": {
+          "$ref": "#/$defs/relativePath",
+          "description": "Destination base path in the consumer project (e.g. 'lib/ui/shadcn')."
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/relativePath"
+          }
+        },
+        "overwrite": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "base"
+            ]
+          },
+          "then": {
+            "required": [
+              "destBase"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "destBase"
+            ]
+          },
+          "then": {
+            "required": [
+              "base"
+            ]
+          }
+        }
+      ]
+    },
+    "copyDirAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "from",
+        "to"
+      ],
+      "properties": {
+        "type": {
+          "const": "copyDir"
+        },
+        "base": {
+          "$ref": "#/$defs/relativePath",
+          "description": "Source base path inside the registry (e.g. 'registry')."
+        },
+        "destBase": {
+          "$ref": "#/$defs/relativePath",
+          "description": "Destination base path in the consumer project (e.g. 'lib/ui/shadcn')."
+        },
+        "from": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "to": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/relativePath"
+          },
+          "description": "Explicit list of files to copy. Each path is registry-relative."
+        },
+        "index": {
+          "$ref": "#/$defs/relativePath",
+          "description": "Optional pointer to an index JSON file containing { files: [...] }."
+        },
+        "overwrite": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "files"
+          ],
+          "not": {
+            "required": [
+              "index"
+            ]
+          }
+        },
+        {
+          "required": [
+            "index"
+          ],
+          "not": {
+            "required": [
+              "files"
+            ]
+          }
+        }
+      ],
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "base"
+            ]
+          },
+          "then": {
+            "required": [
+              "destBase"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "destBase"
+            ]
+          },
+          "then": {
+            "required": [
+              "base"
+            ]
+          }
+        }
+      ],
+      "description": "Copies a directory-like set of files. Provide either files[] or index."
+    },
+    "mergePubspecAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "mergePubspec"
+        },
+        "dependencies": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {}
+        },
+        "devDependencies": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {}
+        },
+        "flutterAssets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "flutterFonts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "family",
+              "fonts"
+            ],
+            "properties": {
+              "family": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fonts": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "asset"
+                  ],
+                  "properties": {
+                    "asset": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "weight": {
+                      "type": "integer"
+                    },
+                    "style": {
+                      "type": "string",
+                      "enum": [
+                        "normal",
+                        "italic"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": []
+        }
+      }
+    },
+    "messageAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "lines"
+      ],
+      "properties": {
+        "type": {
+          "const": "message"
+        },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
     "relativePath": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 300,
+      "maxLength": 500,
       "pattern": "^(?!/)(?!.*\\s)(?!.*\\.\\./)(?!.*\\./\\./)[-a-zA-Z0-9_./]+$",
       "description": "Registry-relative path. No leading '/', no spaces, no '..' segments."
     }

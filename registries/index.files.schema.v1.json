@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flutter-shadcn.github.io/registry-directory/registry/index.schema.v1.json",
+  "title": "Registry Index File Schema (v1)",
+  "description": "Schema for index.json files used by copyDir.index. Index files provide a deterministic list of registry-relative file paths.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "files"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/relativePath"
+      }
+    }
+  },
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^(?!/)(?!.*\\s)(?!.*\\.\\./)(?!.*\\./\\./)[-a-zA-Z0-9_./]+$",
+      "description": "Registry-relative path. No leading '/', no spaces, no '..' segments."
+    }
+  }
+}
