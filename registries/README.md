@@ -30,7 +30,9 @@ https://flutter-shadcn.github.io/registry-directory/registries/registries.json
 For each registry entry:
 
 - `baseUrl` is the root URL.
-- `paths.componentsJson` is resolved relative to `baseUrl`.
+- `paths.*` values are resolved relative to `baseUrl` unless a full HTTPS URI is explicitly allowed by schema.
+- `paths.componentsJson` is required.
+- `paths.indexJson`, `paths.themesJson`, `paths.metaJson`, and other path keys are optional.
 - `install.namespace` is the address prefix.
 - `install.root` is the destination root in the consumer project.
 
@@ -43,3 +45,18 @@ The CLI should enforce:
 - install-root uniqueness (`install.root`)
 - minimum CLI version gate (`minCliVersion`)
 - optional trust pin checks (`trust.mode = sha256`)
+
+## Init Actions (Schema v1)
+
+If a registry includes `init`:
+
+- `version` must be `1`
+- `actions` must be non-empty
+- `copyFiles`:
+  - supports optional `base` + `destBase` pair
+  - requires `files` unless using `from` + `to` form
+  - when `from` + `to` are used, exactly one of `files` or `index` is required
+- `copyDir`:
+  - requires `from` + `to`
+  - requires exactly one of `files` or `index`
+  - supports optional `base` + `destBase` pair
