@@ -14,8 +14,8 @@ Thank you for helping grow the Flutter UI ecosystem.
 Please ensure:
 
 - Your registry is publicly hosted.
-- `components.json` is reachable.
-- Your `baseUrl` is HTTPS and stable.
+- `components.json` is reachable and returns registry manifest JSON.
+- Your `baseUrl` is HTTPS, stable, and points at raw file content.
 - Your namespace is unique.
 - Your install root is unique.
 - Your registry works with the latest CLI version.
@@ -59,8 +59,8 @@ If you use `init` actions:
 - [ ] Install root is unique
 - [ ] URLs are HTTPS
 - [ ] `minCliVersion` follows SemVer
-- [ ] `baseUrl` resolves correctly
-- [ ] `paths.componentsJson` resolves correctly
+- [ ] `baseUrl` resolves to raw file content, not HTML
+- [ ] `paths.componentsJson` resolves to valid registry manifest JSON
 - [ ] Optional paths (`indexJson`, `themesJson`, `metaJson`, etc.) resolve if provided
 - [ ] `init` actions validate against `registries.schema.json` (if present)
 - [ ] `trust.mode=sha256` includes a `sha256` value (if used)

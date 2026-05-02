@@ -29,7 +29,8 @@ CI validates entry syntax, rebuilds `registries/registries.json`, checks it is u
 ## Registry Rules
 
 - Must be publicly reachable over HTTPS.
-- Must provide a valid `components.json` through `baseUrl + paths.componentsJson`.
+- Must provide a valid raw JSON `components.json` through `baseUrl + paths.componentsJson`.
+- `baseUrl` must point at raw registry file content, not a repository browser page.
 - Must declare required fields:
 `id`, `displayName`, `maintainers`, `repo`, `license`, `minCliVersion`, `baseUrl`, `paths.componentsJson`, `install.namespace`, `install.root`.
 - Must use a unique `install.namespace`.

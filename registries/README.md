@@ -29,7 +29,7 @@ https://flutter-shadcn.github.io/registry-directory/registries/registries.json
 
 For each registry entry:
 
-- `baseUrl` is the root URL.
+- `baseUrl` is the raw file root URL. For GitHub-hosted registries, use `https://raw.githubusercontent.com/<owner>/<repo>/<branch>/<path>` instead of a `github.com/.../tree/...` browser URL.
 - `paths.*` values are resolved relative to `baseUrl` unless a full HTTPS URI is explicitly allowed by schema.
 - `paths.componentsJson` is required.
 - `paths.indexJson`, `paths.themesJson`, `paths.metaJson`, and other path keys are optional.

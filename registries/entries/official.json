@@ -9,7 +9,7 @@
   "minCliVersion": "0.1.8",
   "homepage": "https://ibrar-x.github.io/shadcn_flutter_kit/",
   "description": "Official shadcn Flutter registry.",
-  "baseUrl": "https://github.com/ibrar-x/shadcn_flutter_kit/tree/main/flutter_shadcn_kit/lib",
+  "baseUrl": "https://raw.githubusercontent.com/ibrar-x/shadcn_flutter_kit/main/flutter_shadcn_kit/lib",
   "paths": {
     "componentsJson": "registry/manifests/components.json",
     "componentsSchemaJson": "registry/manifests/components.schema.json",

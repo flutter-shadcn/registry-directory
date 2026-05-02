@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-const String _defaultSchemaPath =
-    '/Users/ibrar/Desktop/infinora.noworkspace/shadcn_copy_paste/registry-directory/registries/index.files.schema.v1.json';
+const String _defaultSchemaPath = 'registries/index.files.schema.v1.json';
 
 void main(List<String> args) async {
   final parsed = _parseArgs(args);
