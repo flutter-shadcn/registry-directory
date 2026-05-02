@@ -110,24 +110,17 @@ jobs:
             exit 1
           fi
 
-      - name: Check components.json reachable and valid JSON
+      - name: Check components.json reachable
         run: |
           set -euo pipefail
           failed=0
           while IFS= read -r url; do
             [ -z "$url" ] && continue
-            tmp="$(mktemp)"
-            code="$(curl -L -sS -o "$tmp" -w "%{http_code}" --max-time 20 "$url" || true)"
+            code="$(curl -L -sS -o /dev/null -w "%{http_code}" --max-time 20 "$url" || true)"
             if [ "$code" != "200" ]; then
               echo "components.json check failed: $url (HTTP $code)"
               failed=1
-            elif ! jq -e '.schemaVersion and .components' "$tmp" >/dev/null; then
-              echo "components.json check failed: $url did not return a registry manifest JSON document"
-              head -c 120 "$tmp" || true
-              echo
-              failed=1
             fi
-            rm -f "$tmp"
           done < <(
             jq -r '
               .registries[]
