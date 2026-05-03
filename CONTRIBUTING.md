@@ -42,6 +42,17 @@ Path and install constraints:
 - `install.root` must be under `lib/...`.
 - Namespaces are permanent once merged.
 
+## Theme Publishing Contract
+
+Each registry owns its theme format and generation pipeline. Conversion should happen at registry publish time. The CLI consumes only pre-generated, hash-verified theme artifacts.
+
+If your registry publishes themes:
+
+- Publish generated theme manifests and files as static artifacts.
+- Point `paths.themesJson` at the generated manifest.
+- Include SHA-256 hashes for each published theme artifact file referenced by the manifest.
+- Do not rely on runtime theme converters or any install-time code execution by the CLI.
+
 If you use `init` actions:
 
 - `init.version` must be `1`.
@@ -62,6 +73,7 @@ If you use `init` actions:
 - [ ] `baseUrl` resolves correctly
 - [ ] `paths.componentsJson` resolves correctly
 - [ ] Optional paths (`indexJson`, `themesJson`, `metaJson`, etc.) resolve if provided
+- [ ] `themesJson` points to generated theme artifacts, not runtime converter inputs (if used)
 - [ ] `init` actions validate against `registries.schema.json` (if present)
 - [ ] `trust.mode=sha256` includes a `sha256` value (if used)
 - [ ] No breaking schema changes introduced

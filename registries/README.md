@@ -36,6 +36,12 @@ For each registry entry:
 - `install.namespace` is the address prefix.
 - `install.root` is the destination root in the consumer project.
 
+## Theme Artifact Contract
+
+Each registry owns its theme format and generation pipeline. Conversion should happen at registry publish time. The CLI consumes only pre-generated, hash-verified theme artifacts.
+
+When `paths.themesJson` is present, it should resolve to a generated theme manifest that references published artifact files with SHA-256 hashes. The CLI reads and verifies those artifacts; it does not execute registry code or runtime theme converters.
+
 ## Validation Expectations
 
 The CLI should enforce:

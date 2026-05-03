@@ -30,6 +30,7 @@ CI validates entry syntax, rebuilds `registries/registries.json`, checks it is u
 
 - Must be publicly reachable over HTTPS.
 - Must provide a valid `components.json` through `baseUrl + paths.componentsJson`.
+- If publishing themes, must expose generated theme artifacts through `paths.themesJson`.
 - Must declare required fields:
 `id`, `displayName`, `maintainers`, `repo`, `license`, `minCliVersion`, `baseUrl`, `paths.componentsJson`, `install.namespace`, `install.root`.
 - Must use a unique `install.namespace`.
@@ -38,6 +39,19 @@ CI validates entry syntax, rebuilds `registries/registries.json`, checks it is u
 - Paths must be registry-relative and must not include unsafe traversal patterns.
 - `minCliVersion` must be SemVer.
 - `trust.mode=sha256` requires `trust.sha256`.
+
+## Generated Theme Artifact Contract
+
+Each registry owns its theme format and generation pipeline. Conversion should happen at registry publish time. The CLI consumes only pre-generated, hash-verified theme artifacts.
+
+For registry authors, that means:
+
+- Publish theme outputs as generated static artifacts, not executable converter logic.
+- Expose the generated theme manifest at `paths.themesJson`.
+- Include SHA-256 hashes for published theme files so consumers can verify integrity before installation.
+- Treat theme generation as part of registry build and release automation.
+
+The registry directory only points the CLI at published artifacts. The CLI does not execute registry code to convert themes at install time.
 
 ## Init Action Model
 
