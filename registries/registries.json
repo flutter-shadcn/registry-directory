@@ -169,12 +169,26 @@
                 ]
               },
               {
-                "label": "Icon fonts (Bootstrap, Lucide, Radix)",
-                "description": "Required for shadcn_flutter icons - ~0.6 MB",
+                "label": "Bootstrap icon font",
+                "description": "Bootstrap icon font asset.",
                 "default": true,
                 "files": [
-                  "bootstrap.otf",
-                  "lucide.ttf",
+                  "bootstrap.otf"
+                ]
+              },
+              {
+                "label": "Lucide icon font",
+                "description": "Lucide icon font asset.",
+                "default": true,
+                "files": [
+                  "lucide.ttf"
+                ]
+              },
+              {
+                "label": "Radix icon font",
+                "description": "Radix icon font asset.",
+                "default": true,
+                "files": [
                   "radix.otf"
                 ]
               }
