@@ -106,7 +106,39 @@
         "init": {
           "$ref": "#/$defs/init"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "capabilities": {
+                "type": "object",
+                "properties": {
+                  "theme": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "theme"
+                ]
+              }
+            },
+            "required": [
+              "capabilities"
+            ]
+          },
+          "then": {
+            "properties": {
+              "paths": {
+                "required": [
+                  "themesJson",
+                  "themesSchemaJson"
+                ]
+              }
+            }
+          }
+        }
+      ]
     },
     "paths": {
       "type": "object",
@@ -128,23 +160,12 @@
           "$ref": "#/$defs/relativePath"
         },
         "themesJson": {
-          "$ref": "#/$defs/relativePath"
+          "$ref": "#/$defs/relativePath",
+          "description": "Registry-relative path to a generated theme artifact manifest matching the declarative contract in #/$defs/themeManifest."
         },
         "themesSchemaJson": {
-          "$ref": "#/$defs/relativePath"
-        },
-        "themeConverterDart": {
-          "description": "Optional Dart converter script used to transform registry-specific theme JSON into the CLI theme DTO.",
-          "oneOf": [
-            {
-              "$ref": "#/$defs/relativePath"
-            },
-            {
-              "type": "string",
-              "format": "uri",
-              "pattern": "^(https://).+"
-            }
-          ]
+          "$ref": "#/$defs/relativePath",
+          "description": "Registry-relative path to the JSON Schema that validates the themesJson theme artifact manifest."
         },
         "folderStructureJson": {
           "$ref": "#/$defs/relativePath"
@@ -892,6 +913,127 @@
             "type": "string",
             "minLength": 1
           }
+        }
+      }
+    },
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^(https://).+",
+      "description": "Absolute HTTPS URL."
+    },
+    "safeRelativePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\)(?!.*\\s)(?!.*//)(?!.*(?:^|/)\\.\\.?(/|$))[-a-zA-Z0-9_./]+$",
+      "description": "Safe relative path. Rejects absolute paths, Windows drive prefixes, backslashes, spaces, duplicate slashes, and '.'/'..' path segments."
+    },
+    "safeRelativePathOrHttpsUrl": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/safeRelativePath"
+        },
+        {
+          "$ref": "#/$defs/httpsUrl"
+        }
+      ],
+      "description": "Either a safe relative path or an absolute HTTPS URL."
+    },
+    "safeProjectRelativePath": {
+      "$ref": "#/$defs/safeRelativePath",
+      "description": "Safe path relative to the consumer project root. Absolute paths and traversal-looking segments are rejected."
+    },
+    "sha256Hex64": {
+      "type": "string",
+      "pattern": "^[0-9A-Fa-f]{64}$",
+      "description": "SHA-256 digest encoded as exactly 64 hexadecimal characters."
+    },
+    "themeManifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "themes"
+      ],
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "integer",
+          "const": 1
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "themes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/themeManifestEntry"
+          }
+        }
+      },
+      "description": "Declarative manifest for generated theme install artifacts."
+    },
+    "themeManifestEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "label",
+        "files"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_\\-]{1,63}$",
+          "description": "Stable theme identifier used by the CLI."
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Human-readable theme name."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "source": {
+          "$ref": "#/$defs/safeRelativePathOrHttpsUrl",
+          "description": "Optional source theme document for inspection or documentation."
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/themeManifestFile"
+          }
+        }
+      }
+    },
+    "themeManifestFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "target",
+        "sha256"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/safeRelativePathOrHttpsUrl",
+          "description": "Generated artifact source path in the registry, or an absolute HTTPS URL."
+        },
+        "target": {
+          "$ref": "#/$defs/safeProjectRelativePath",
+          "description": "Destination path relative to the consumer project root."
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256Hex64"
         }
       }
     },

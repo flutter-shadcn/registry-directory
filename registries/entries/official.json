@@ -17,7 +17,6 @@
     "indexSchemaJson": "manifests/index.schema.json",
     "themesJson": "manifests/theme.index.json",
     "themesSchemaJson": "manifests/themes.index.schema.json",
-    "themeConverterDart": "https://raw.githubusercontent.com/ibrar-x/shadcn_flutter_kit/main/flutter_shadcn_kit/tool/theme/theme_preset_json_to_dart.dart",
     "folderStructureJson": "manifests/folder_structure.json"
   },
   "install": {
