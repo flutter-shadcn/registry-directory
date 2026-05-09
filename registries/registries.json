@@ -42,8 +42,8 @@
           {
             "type": "message",
             "lines": [
-              "shared core: theme, util, color_extensions, form_control, form_value_supplier",
-              "pub dependencies: data_widget, gap"
+              "shared core: theme, app_theme, util, color_extensions, form_control, form_value_supplier, localizations, localizations_extensions",
+              "pub dependencies: data_widget, gap, flutter_localizations"
             ]
           },
           {
@@ -61,6 +61,11 @@
             "overwrite": false,
             "files": [
               "theme/theme.dart",
+              "theme/app_theme.dart",
+              "localizations/_impl/core/shadcn_localizations.dart",
+              "localizations/_impl/utils/__shadcn_localizations_delegate.dart",
+              "localizations/shadcn_localizations.dart",
+              "localizations/shadcn_localizations_extensions.dart",
               "theme/typography.dart",
               "theme/schema/component_schema.dart",
               "theme/component_theme_global_registry.dart",
@@ -197,7 +202,8 @@
             "type": "mergePubspec",
             "dependencies": {
               "data_widget": "^0.0.2",
-              "gap": "^3.0.1"
+              "gap": "^3.0.1",
+              "flutter_localizations": "sdk: flutter"
             },
             "deriveFlutterAssets": true
           }
