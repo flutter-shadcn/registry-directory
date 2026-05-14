@@ -34,6 +34,10 @@
   "init": {
     "version": 1,
     "description": "Bootstrap shared core files, dependencies, and font assets for flutter_shadcn.",
+    "defaultComponents": [
+      "app",
+      "locale_utils"
+    ],
     "actions": [
       {
         "type": "message",
@@ -58,6 +62,8 @@
         "files": [
           "theme/theme.dart",
           "theme/app_theme.dart",
+          "theme/app_theme_preset.dart",
+          "theme/preset_themes.dart",
           "localizations/_impl/core/shadcn_localizations.dart",
           "localizations/_impl/utils/__shadcn_localizations_delegate.dart",
           "localizations/shadcn_localizations.dart",
