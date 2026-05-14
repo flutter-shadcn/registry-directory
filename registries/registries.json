@@ -13,15 +13,15 @@
       "minCliVersion": "0.1.8",
       "homepage": "https://ibrar-x.github.io/shadcn_flutter_kit/",
       "description": "Official shadcn Flutter registry.",
-      "baseUrl": "https://github.com/ibrar-x/shadcn_flutter_kit/tree/main/flutter_shadcn_kit/lib/registry",
+      "baseUrl": "https://github.com/ibrar-x/shadcn_flutter_kit/tree/main/flutter_shadcn_kit/lib",
       "paths": {
-        "componentsJson": "manifests/components.json",
-        "componentsSchemaJson": "manifests/components.schema.json",
-        "indexJson": "manifests/index.json",
-        "indexSchemaJson": "manifests/index.schema.json",
-        "themesJson": "manifests/theme.index.json",
-        "themesSchemaJson": "manifests/themes.index.schema.json",
-        "folderStructureJson": "manifests/folder_structure.json"
+        "componentsJson": "registry/manifests/components.json",
+        "componentsSchemaJson": "registry/manifests/components.schema.json",
+        "indexJson": "registry/manifests/index.json",
+        "indexSchemaJson": "registry/manifests/index.schema.json",
+        "themesJson": "registry/manifests/theme.index.json",
+        "themesSchemaJson": "registry/manifests/themes.index.schema.json",
+        "folderStructureJson": "registry/manifests/folder_structure.json"
       },
       "install": {
         "namespace": "shadcn",
@@ -60,7 +60,7 @@
           },
           {
             "type": "copyFiles",
-            "base": "shared",
+            "base": "registry/shared",
             "destBase": "lib/ui/shadcn/shared",
             "overwrite": false,
             "files": [
@@ -126,7 +126,7 @@
             "optional": true,
             "promptLabel": "Install font assets?",
             "promptDescription": "Copies selected font families to assets/fonts/.",
-            "base": "shared",
+            "base": "registry/shared",
             "destBase": ".",
             "from": "fonts",
             "to": "assets/fonts",
