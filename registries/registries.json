@@ -127,6 +127,7 @@
             "promptLabel": "Install font assets?",
             "promptDescription": "Copies selected font families to assets/fonts/.",
             "base": "shared",
+            "destBase": ".",
             "from": "fonts",
             "to": "assets/fonts",
             "overwrite": false,
