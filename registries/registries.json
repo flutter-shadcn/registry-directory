@@ -37,16 +37,12 @@
       },
       "init": {
         "version": 1,
-        "description": "Bootstrap shared core files, dependencies, and font assets for flutter_shadcn.",
-        "defaultComponents": [
-          "app",
-          "locale_utils"
-        ],
+        "description": "Minimal bootstrap for flutter_shadcn. Shared and component files are installed on demand when components are added.",
         "actions": [
           {
             "type": "message",
             "lines": [
-              "shared core: theme, app_theme, util, color_extensions, form_control, form_value_supplier, localizations, localizations_extensions",
+              "shadcn_flutter initialized.",
               "pub dependencies: data_widget, gap, flutter_localizations"
             ]
           },
@@ -54,71 +50,7 @@
             "type": "ensureDirs",
             "dirs": [
               "assets/fonts",
-              "assets/fonts/geist",
-              "lib/ui/shadcn/shared"
-            ]
-          },
-          {
-            "type": "copyFiles",
-            "base": "registry/shared",
-            "destBase": "lib/ui/shadcn/shared",
-            "overwrite": false,
-            "files": [
-              "theme/theme.dart",
-              "theme/app_theme.dart",
-              "theme/app_theme_preset.dart",
-              "theme/preset_themes.dart",
-              "localizations/_impl/core/shadcn_localizations.dart",
-              "localizations/_impl/utils/__shadcn_localizations_delegate.dart",
-              "localizations/shadcn_localizations.dart",
-              "localizations/shadcn_localizations_extensions.dart",
-              "theme/typography.dart",
-              "theme/schema/component_schema.dart",
-              "theme/component_theme_global_registry.dart",
-              "theme/color_scheme.dart",
-              "theme/generated_colors.dart",
-              "theme/_impl/core/adaptive_scaler.dart",
-              "theme/_impl/core/adaptive_scaling.dart",
-              "theme/_impl/core/density.dart",
-              "theme/_impl/core/design_tokens.dart",
-              "theme/_impl/core/chart_color_scheme.dart",
-              "theme/_impl/core/color_scheme.dart",
-              "theme/_impl/core/color_schemes.dart",
-              "theme/_impl/core/color_shades.dart",
-              "theme/_impl/core/single_chart_color_scheme.dart",
-              "theme/_impl/themes/__animated_theme_state.dart",
-              "theme/_impl/themes/animated_theme.dart",
-              "theme/_impl/themes/component_theme.dart",
-              "theme/_impl/themes/component_theme_data.dart",
-              "theme/_impl/themes/icon_theme_properties.dart",
-              "theme/_impl/themes/theme.dart",
-              "theme/_impl/themes/theme_data.dart",
-              "theme/_impl/themes/theme_data_tween.dart",
-              "utils/color_extensions.dart",
-              "primitives/_impl/core/controlled_component_adapter.dart",
-              "primitives/_impl/core/controlled_component_data.dart",
-              "primitives/_impl/core/form_key.dart",
-              "primitives/_impl/core/replace_result.dart",
-              "primitives/_impl/core/validation_result.dart",
-              "primitives/_impl/state/__controlled_component_adapter_state.dart",
-              "primitives/_impl/utils/component_value_controller.dart",
-              "primitives/form_control.dart",
-              "primitives/form_value_supplier.dart",
-              "utils/_impl/core/bi_directional_convert.dart",
-              "utils/_impl/core/cached_value_widget.dart",
-              "utils/_impl/core/callback_context_action.dart",
-              "utils/_impl/core/captured_wrapper.dart",
-              "utils/_impl/core/context_callback_action.dart",
-              "utils/_impl/core/form_pending_builder.dart",
-              "utils/_impl/core/repeated_animation_builder.dart",
-              "utils/_impl/core/separated_flex.dart",
-              "utils/_impl/core/time_of_day.dart",
-              "utils/_impl/state/__cached_value_widget_state.dart",
-              "utils/_impl/state/__captured_wrapper_state.dart",
-              "utils/_impl/state/__repeated_animation_builder_state.dart",
-              "utils/_impl/state/__separated_flex_state.dart",
-              "utils/_impl/utils/converted_controller.dart",
-              "utils/util.dart"
+              "assets/fonts/geist"
             ]
           },
           {
@@ -135,7 +67,7 @@
               {
                 "label": "Geist Sans",
                 "description": "18 weight/style variants - ~3.2 MB",
-                "default": true,
+                "default": false,
                 "files": [
                   "geist/Geist-Black.otf",
                   "geist/Geist-BlackItalic.otf",
@@ -159,7 +91,7 @@
               {
                 "label": "Geist Mono",
                 "description": "17 weight/style variants - ~2.8 MB",
-                "default": true,
+                "default": false,
                 "files": [
                   "geist/GeistMono-Black.otf",
                   "geist/GeistMono-BlackItalic.otf",
@@ -183,7 +115,7 @@
               {
                 "label": "Bootstrap icon font",
                 "description": "Bootstrap icon font asset.",
-                "default": true,
+                "default": false,
                 "files": [
                   "bootstrap.otf"
                 ]
@@ -191,7 +123,7 @@
               {
                 "label": "Lucide icon font",
                 "description": "Lucide icon font asset.",
-                "default": true,
+                "default": false,
                 "files": [
                   "lucide.ttf"
                 ]
@@ -199,7 +131,7 @@
               {
                 "label": "Radix icon font",
                 "description": "Radix icon font asset.",
-                "default": true,
+                "default": false,
                 "files": [
                   "radix.otf"
                 ]
