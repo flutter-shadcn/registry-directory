@@ -37,11 +37,7 @@
       },
       "init": {
         "version": 1,
-        "description": "Bootstrap shared core files, dependencies, and font assets for flutter_shadcn.",
-        "defaultComponents": [
-          "app",
-          "locale_utils"
-        ],
+        "description": "Bootstrap shared core files and dependencies for flutter_shadcn.",
         "actions": [
           {
             "type": "message",
@@ -53,8 +49,6 @@
           {
             "type": "ensureDirs",
             "dirs": [
-              "assets/fonts",
-              "assets/fonts/geist",
               "lib/ui/shadcn/shared"
             ]
           },
@@ -135,7 +129,7 @@
               {
                 "label": "Geist Sans",
                 "description": "18 weight/style variants - ~3.2 MB",
-                "default": true,
+                "default": false,
                 "files": [
                   "geist/Geist-Black.otf",
                   "geist/Geist-BlackItalic.otf",
@@ -159,7 +153,7 @@
               {
                 "label": "Geist Mono",
                 "description": "17 weight/style variants - ~2.8 MB",
-                "default": true,
+                "default": false,
                 "files": [
                   "geist/GeistMono-Black.otf",
                   "geist/GeistMono-BlackItalic.otf",
@@ -183,7 +177,7 @@
               {
                 "label": "Bootstrap icon font",
                 "description": "Bootstrap icon font asset.",
-                "default": true,
+                "default": false,
                 "files": [
                   "bootstrap.otf"
                 ]
@@ -191,7 +185,7 @@
               {
                 "label": "Lucide icon font",
                 "description": "Lucide icon font asset.",
-                "default": true,
+                "default": false,
                 "files": [
                   "lucide.ttf"
                 ]
@@ -199,7 +193,7 @@
               {
                 "label": "Radix icon font",
                 "description": "Radix icon font asset.",
-                "default": true,
+                "default": false,
                 "files": [
                   "radix.otf"
                 ]
