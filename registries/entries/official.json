@@ -39,7 +39,8 @@
         "type": "message",
         "lines": [
           "shared core: theme, app_theme, util, color_extensions, form_control, form_value_supplier, localizations, localizations_extensions",
-          "pub dependencies: data_widget, gap, flutter_localizations"
+          "default components: app, shadcn_localizations, shadcn_localizations_en",
+          "pub dependencies: data_widget, gap, flutter_localizations, intl"
         ]
       },
       {
@@ -109,6 +110,36 @@
           "utils/_impl/state/__separated_flex_state.dart",
           "utils/_impl/utils/converted_controller.dart",
           "utils/util.dart"
+        ]
+      },
+      {
+        "type": "copyFiles",
+        "base": "registry/components/layout/app",
+        "destBase": "lib/ui/shadcn/components/layout/app",
+        "overwrite": false,
+        "files": [
+          "_impl/core/shadcn_ui.dart",
+          "app.dart",
+          "component_theme_global_configs.dart"
+        ]
+      },
+      {
+        "type": "copyFiles",
+        "base": "registry/components/utility/shadcn_localizations",
+        "destBase": "lib/ui/shadcn/components/utility/shadcn_localizations",
+        "overwrite": false,
+        "files": [
+          "_impl/utils/shadcn_localizations_delegate.dart",
+          "shadcn_localizations.dart"
+        ]
+      },
+      {
+        "type": "copyFiles",
+        "base": "registry/components/utility/shadcn_localizations_en",
+        "destBase": "lib/ui/shadcn/components/utility/shadcn_localizations_en",
+        "overwrite": false,
+        "files": [
+          "shadcn_localizations_en.dart"
         ]
       },
       {
@@ -201,7 +232,8 @@
         "dependencies": {
           "data_widget": "^0.0.2",
           "gap": "^3.0.1",
-          "flutter_localizations": "sdk: flutter"
+          "flutter_localizations": "sdk: flutter",
+          "intl": "any"
         },
         "deriveFlutterAssets": true
       }

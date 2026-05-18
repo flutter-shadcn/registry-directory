@@ -43,7 +43,8 @@
             "type": "message",
             "lines": [
               "shared core: theme, app, util, color_extensions, form_control, form_value_supplier, localizations, overlay",
-              "pub dependencies: data_widget, gap, flutter_localizations"
+              "default components: app, shadcn_localizations, shadcn_localizations_en",
+              "pub dependencies: data_widget, gap, flutter_localizations, intl"
             ]
           },
           {
@@ -151,6 +152,25 @@
           },
           {
             "type": "copyFiles",
+            "base": "registry/components/utility/shadcn_localizations",
+            "destBase": "lib/ui/shadcn/components/utility/shadcn_localizations",
+            "overwrite": false,
+            "files": [
+              "_impl/utils/shadcn_localizations_delegate.dart",
+              "shadcn_localizations.dart"
+            ]
+          },
+          {
+            "type": "copyFiles",
+            "base": "registry/components/utility/shadcn_localizations_en",
+            "destBase": "lib/ui/shadcn/components/utility/shadcn_localizations_en",
+            "overwrite": false,
+            "files": [
+              "shadcn_localizations_en.dart"
+            ]
+          },
+          {
+            "type": "copyFiles",
             "optional": true,
             "promptLabel": "Install font assets?",
             "promptDescription": "Copies selected font families to assets/fonts/.",
@@ -239,7 +259,8 @@
             "dependencies": {
               "data_widget": "^0.0.2",
               "gap": "^3.0.1",
-              "flutter_localizations": "sdk: flutter"
+              "flutter_localizations": "sdk: flutter",
+              "intl": "any"
             },
             "deriveFlutterAssets": true
           }
