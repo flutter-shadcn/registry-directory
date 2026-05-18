@@ -42,7 +42,7 @@
           {
             "type": "message",
             "lines": [
-              "shared core: theme, app_theme, util, color_extensions, form_control, form_value_supplier, localizations, localizations_extensions",
+              "shared core: theme, app, util, color_extensions, form_control, form_value_supplier, localizations, overlay",
               "pub dependencies: data_widget, gap, flutter_localizations"
             ]
           },
@@ -65,7 +65,27 @@
               "localizations/_impl/core/shadcn_localizations.dart",
               "localizations/_impl/utils/__shadcn_localizations_delegate.dart",
               "localizations/shadcn_localizations.dart",
-              "localizations/shadcn_localizations_extensions.dart",
+              "primitives/_impl/core/animated_value_builder.dart",
+              "primitives/_impl/core/__fallback_overlay_manager.dart",
+              "primitives/_impl/core/overlay_barrier.dart",
+              "primitives/_impl/core/overlay_manager.dart",
+              "primitives/_impl/core/overlay_manager_layer.dart",
+              "primitives/_impl/core/overlay_popover_entry.dart",
+              "primitives/_impl/core/popover.dart",
+              "primitives/_impl/core/popover_layout.dart",
+              "primitives/_impl/core/popover_layout_render.dart",
+              "primitives/_impl/core/popover_overlay_widget.dart",
+              "primitives/_impl/core/shadcn_layer.dart",
+              "primitives/_impl/state/__animated_value_builder_state.dart",
+              "primitives/_impl/state/__overlay_manager_layer_state.dart",
+              "primitives/_impl/state/popover_overlay_widget_state.dart",
+              "primitives/_impl/utils/overlay_completer.dart",
+              "primitives/_impl/utils/overlay_handler.dart",
+              "primitives/_impl/utils/popover_controller.dart",
+              "primitives/_impl/utils/popover_overlay_handler.dart",
+              "primitives/animated_value_builder.dart",
+              "primitives/overlay.dart",
+              "primitives/popover.dart",
               "theme/typography.dart",
               "theme/schema/component_schema.dart",
               "theme/component_theme_global_registry.dart",
@@ -112,7 +132,21 @@
               "utils/_impl/state/__repeated_animation_builder_state.dart",
               "utils/_impl/state/__separated_flex_state.dart",
               "utils/_impl/utils/converted_controller.dart",
+              "utils/constants.dart",
+              "utils/geometry_extensions.dart",
+              "utils/tween_utils.dart",
               "utils/util.dart"
+            ]
+          },
+          {
+            "type": "copyFiles",
+            "base": "registry/components/layout/app",
+            "destBase": "lib/ui/shadcn/components/layout/app",
+            "overwrite": false,
+            "files": [
+              "_impl/core/shadcn_ui.dart",
+              "app.dart",
+              "component_theme_global_configs.dart"
             ]
           },
           {
