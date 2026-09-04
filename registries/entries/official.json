@@ -4,12 +4,12 @@
   "maintainers": [
     "ibrar-x"
   ],
-  "repo": "https://github.com/ibrar-x/shadcn_flutter_kit",
+  "repo": "https://github.com/mibrar-dev/shadcn_flutter_kit",
   "license": "MIT",
   "minCliVersion": "0.1.8",
   "homepage": "https://ibrar-x.github.io/shadcn_flutter_kit/",
   "description": "Official shadcn Flutter registry.",
-  "baseUrl": "https://github.com/ibrar-x/shadcn_flutter_kit/tree/a886eb1a280ae3108bc4fbdd3ce4c842b32b786e/flutter_shadcn_kit/lib",
+  "baseUrl": "https://github.com/mibrar-dev/shadcn_flutter_kit/tree/1594125104d670ad002a3cca0228ca093a6120cf/flutter_shadcn_kit/lib",
   "paths": {
     "componentsJson": "registry/manifests/components.json",
     "componentsSchemaJson": "registry/manifests/components.schema.json",
